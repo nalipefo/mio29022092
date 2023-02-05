@@ -1,0 +1,20 @@
+(function ($) {
+    $(window).on('elementor/frontend/init', function () {
+        if (typeof elementor != "undefined" && typeof elementor.settings.page != "undefined") {
+            function handleExqute(newValue) {
+                elementor.saver.update({
+                    onSuccess: function () {
+                        elementor.reloadPreview();
+                        elementor.once('preview:loaded', function () {
+                            elementor.getPanelView().setPage('page_settings');
+                        });
+                    }
+                });
+            }
+            elementor.settings.page.addChangeCallback('exqute_subtitle', handleExqute);
+            elementor.settings.page.addChangeCallback('exqute_hide_header_img', handleExqute);
+            elementor.settings.page.addChangeCallback('exqute_hide_header_overlay', handleExqute);
+            elementor.settings.page.addChangeCallback('template', handleExqute);
+        }
+    });
+})(jQuery);

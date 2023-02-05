@@ -1,0 +1,100 @@
+(function ($) {
+    "use strict";
+    
+    /* BS4 Dropdown */
+    var bs4dropdown = function () {
+        var ww = document.body.clientWidth;
+        var bs4menuevent = '';
+        var bs4toggle = $('body').find( '.dropdown-menu a.dropdown-toggle' );
+        if (ww <= 991) {
+            bs4menuevent = 'click';
+        } else {
+            bs4menuevent = 'mouseover';
+        }
+        bs4toggle.unbind('click');
+        bs4toggle.unbind('mouseover');
+        bs4toggle.bind( bs4menuevent, function ( e ) {
+        var $el = $( this );
+        var $parent = $( this ).offsetParent( ".dropdown-menu" );
+        if ( !$( this ).next().hasClass( 'show' ) ) {
+            $( this ).parents( '.dropdown-menu' ).first().find( '.show' ).removeClass( "show" );
+        }
+        var $subMenu = $( this ).next( ".dropdown-menu" );
+        $subMenu.toggleClass( 'show' );
+        
+        $( this ).parent( "li" ).toggleClass( 'show' );
+
+        $( this ).parents( 'li.nav-item.dropdown.show' ).on( 'hidden.bs.dropdown', function ( e ) {
+            $( '.dropdown-menu .show' ).removeClass( "show" );
+        } );
+        
+         if ( !$parent.parent().hasClass( 'navbar-nav' ) ) {
+             if (exqute_script_vars.exqute_language == 'default') {
+                 $el.next().css( { "top": $el[0].offsetTop, "left": $parent.outerWidth() - 4 } );
+             } else {
+                 $el.next().css( { "top": $el[0].offsetTop, "right": $parent.outerWidth() - 4 } );
+             }
+        }
+
+        return false;
+    } );
+    };
+    
+    $("#exqute-collapse-close").on('click', function () {
+        $("#exqute-main-menu").addClass('collapsing-out');
+        setTimeout(function(){ 
+            $("#exqute-main-menu").removeClass('collapsing-out');
+        }, 200);
+    });
+    
+    /* GO TO TOP BUTTON */
+    $("#exqute-gototop").on('click', function (e) {
+        e.preventDefault();
+        $("html, body").animate({
+            scrollTop: 0
+        }, 500);
+        return false;
+    });
+    
+    /* WOOCOMMERCE TOGGLES */   
+    $('body').find(".woocommerce .showlogin").on('click', function () {
+        $(this).toggleClass('collapsed');
+    });
+    
+    $('body').find(".woocommerce .showcoupon").on('click', function () {
+        $(this).toggleClass('collapsed');
+    });
+    
+    $('body').find(".woocommerce .shipping-calculator-button").on('click', function () {
+        $(this).toggleClass('collapsed');
+    });
+
+    /* fixed menu on scroll for desktop */
+
+    var fixedHeader = function () {
+        if ($(window).width() > 992) {
+            var menu_height = $('#exqute-header-menu').outerHeight();
+            $(window).scroll(function(){  
+                if ($(this).scrollTop() > menu_height) {
+                    $('#exqute-header-menu').addClass("fixed-top");
+                }else{
+                    $('#exqute-header-menu').removeClass("fixed-top");
+                }   
+            });
+        }
+    }
+    
+    /* EVENTS */  
+    $(document).ready(function () {
+        bs4dropdown();
+        if (exqute_script_vars.exqute_fixed_header == 'on') {
+            fixedHeader();
+        }
+        $('body').find('select').addClass('custom-select');
+        $('body').find('.exqute-masonry-grid').egemenerdMasonry();   
+    });
+    
+    $(window).on('resize orientationchange', function () {
+        bs4dropdown();
+    });
+})(jQuery);

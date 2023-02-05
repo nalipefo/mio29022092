@@ -1,0 +1,10 @@
+( function( $ ) {
+	$( window ).on( 'elementor/frontend/init', function() {
+        elementorFrontend.hooks.addAction('frontend/element_ready/exqute-masonry.default', function($scope){
+            $scope.find('.exqute-masonry-grid2').egemenerdMasonry();
+        });
+        elementorFrontend.hooks.addAction('frontend/element_ready/exqute-gallery.default', function($scope){
+            $scope.find('.exqute-masonry-grid2').egemenerdMasonry();
+        });
+	} );
+} )( jQuery );

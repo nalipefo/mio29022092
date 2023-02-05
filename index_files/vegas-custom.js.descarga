@@ -1,0 +1,93 @@
+(function ($) {
+    "use strict";
+    $(document).ready(function () {
+        var exqute_vegas_imgs = [];
+        var exqute_vegas_container = $("#exqute-header-slider");
+        var exqute_menu_height = $("#exqute-header-menu").height() + $("#exqute-header-menu").height()/2;
+        
+        $("#exqute-slides").css('height', exqute_vegas_container.height() - (exqute_menu_height + 50));
+
+        // Get the data
+        exqute_vegas_container.find('.exqute-slide').each(function () {
+            exqute_vegas_imgs.push({
+                src: $(this).data('img'),
+                title: $(this).data('title'),
+                subtitle: $(this).data('subtitle'),
+                destination: $(this).data('destination'),
+                destination2: $(this).data('destination2'),
+                target: $(this).data('target'),
+                animation: $(this).data('animation'),
+                align: 'center',
+                valign: 'center',
+                btntext: $(this).data('btntext'),
+                btntext2: $(this).data('btntext2'),
+                animationDuration: $(this).data('animationduration') + '000'
+            });
+        });
+
+        // Start Vegas Slider
+        exqute_vegas_container.vegas({
+            autoplay: exqute_slider_vars.exqute_autoplay,
+            delay: exqute_slider_vars.exqute_duration + '000',
+            timer: true,
+            preload: true,
+            slides: exqute_vegas_imgs,
+            walk: function (index, slideSettings) {
+                $('#exqute-page-title').find('h1').fadeOut(400);
+                $('#exqute-page-title').find('p').fadeOut(400);
+                $('#exqute-page-title-btn').fadeOut(400);
+                setTimeout(function(){
+                $('#exqute-page-title').removeClass();   
+                if(slideSettings.title) {
+                    $('#exqute-page-title').find('h1').html(slideSettings.title);
+                } else {
+                    $('#exqute-page-title').find('h1').html('');
+                }
+                if(slideSettings.subtitle) {
+                    $('#exqute-page-title').find('p').html(slideSettings.subtitle);
+                } else {
+                    $('#exqute-page-title').find('p').html('');
+                }
+                if(slideSettings.destination) {
+                    $('#exqute-page-title-btn-1').html('<a href="' + slideSettings.destination + '" class="btn btn-' + exqute_slider_vars.exqute_btn_style + '" target="' + slideSettings.target + '">' + slideSettings.btntext + '</a>');
+                } else {
+                    $('#exqute-page-title-btn-1').html('');
+                }
+                if(slideSettings.destination2) {
+                    $('#exqute-page-title-btn-2').html('<a href="' + slideSettings.destination2 + '" class="btn btn-outline-' + exqute_slider_vars.exqute_btn_style + '" target="' + slideSettings.target + '">' + slideSettings.btntext2 + '</a>');
+                } else {
+                    $('#exqute-page-title-btn-2').html('');
+                }    
+                $('#exqute-page-title').find('h1').fadeIn(400);
+                $('#exqute-page-title').find('p').fadeIn(400);
+                $('#exqute-page-title-btn').fadeIn(400);
+                }, 600);
+            }
+        });
+
+        if (exqute_slider_vars.exqute_autoplay == "false") {
+            exqute_vegas_container.vegas('pause');
+        }
+
+        /* Slider Navigation */
+        $('#exqute-slider-nav-left').on('click', function (e) {
+            e.preventDefault();
+            exqute_vegas_container.vegas('previous');
+        });
+
+        $('#exqute-slider-nav-right').on('click', function (e) {
+            e.preventDefault();
+            exqute_vegas_container.vegas('next');
+        });
+    });
+    
+    $(window).on('resize orientationchange', function () {
+        var exqute_vegas_container = $("#exqute-header-slider");
+        var exqute_menu_height = $("#exqute-header-menu").height() + $("#exqute-header-menu").height()/2;   $("#exqute-slides").css('height', exqute_vegas_container.height() - (exqute_menu_height + 50));
+    });
+    
+    $(window).on('load', function () {
+        $('#exqute-slider-loader').fadeOut(400);
+    });
+
+})(jQuery);
